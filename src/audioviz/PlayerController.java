@@ -7,6 +7,7 @@ package audioviz;
 
 import java.io.File;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -81,6 +82,8 @@ public class PlayerController implements Initializable {
     private Visualizer currentVisualizer;
     private final Integer[] bandsList = {1, 2, 4, 8, 16, 20, 40, 60, 100, 120, 140};
     
+    DecimalFormat df = new DecimalFormat("#.0");
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         bandsText.setText(Integer.toString(numBands));
@@ -108,6 +111,19 @@ public class PlayerController implements Initializable {
             });
             bandsMenu.getItems().add(menuItem);
         }
+        
+        timeSlider.setOnDragDetected((MouseEvent event) -> {
+            mediaPlayer.pause();
+        });
+        
+        timeSlider.valueProperty().addListener((obs, oldval, newVal) -> {
+            if(mediaPlayer.getStatus().equals(mediaPlayer.getStatus().PAUSED)) {
+                Duration duration = Duration.millis(newVal.doubleValue());
+                mediaPlayer.seek(duration);
+                currentText.setText(df.format(duration.toMillis()));
+                timeSlider.setValue(duration.toMillis());
+            }
+        });
     }
     
     private void selectVisualizer(ActionEvent event) {
@@ -168,9 +184,9 @@ public class PlayerController implements Initializable {
     
     private void handleReady() {
         Duration duration = mediaPlayer.getTotalDuration();
-        lengthText.setText(duration.toString());
+        lengthText.setText(df.format(duration.toMillis()));
         Duration ct = mediaPlayer.getCurrentTime();
-        currentText.setText(ct.toString());
+        currentText.setText(df.format(ct.toMillis()));
         currentVisualizer.start(numBands, vizPane);
         timeSlider.setMin(0);
         timeSlider.setMax(duration.toMillis());
@@ -185,7 +201,7 @@ public class PlayerController implements Initializable {
     private void handleUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
         Duration ct = mediaPlayer.getCurrentTime();
         double ms = ct.toMillis();
-        currentText.setText(Double.toString(ms));
+        currentText.setText(df.format(ms));
         timeSlider.setValue(ms);
         
         currentVisualizer.update(timestamp, duration, magnitudes, phases);
@@ -219,16 +235,6 @@ public class PlayerController implements Initializable {
     private void handleStop(ActionEvent event) {
         if (mediaPlayer != null) {
            mediaPlayer.stop(); 
-        }
-    }
-    
-    @FXML
-    private void handleSeek(DragEvent event) {
-        if (mediaPlayer != null) {
-            Duration duration = Duration.millis(timeSlider.getValue());
-            mediaPlayer.seek(duration);
-            currentText.setText(Double.toString(duration.toMillis()));
-            timeSlider.setValue(duration.toMillis());
         }
     }
 }

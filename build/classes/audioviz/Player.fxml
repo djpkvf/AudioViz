@@ -34,7 +34,7 @@
             <Label layoutX="28.0" layoutY="112.0" text="Length:" />
             <Label layoutX="25.0" layoutY="137.0" text="Current:" />
             <Text fx:id="currentText" layoutX="86.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-            <AnchorPane fx:id="vizPane" layoutX="236.0" layoutY="106.0" onDragDone="#handleSeek" prefHeight="397.0" prefWidth="550.0" />
+            <AnchorPane fx:id="vizPane" layoutX="236.0" layoutY="106.0" prefHeight="397.0" prefWidth="550.0" />
             <Text fx:id="errorText" fill="RED" layoutX="25.0" layoutY="592.0" strokeType="OUTSIDE" strokeWidth="0.0" />
             <MediaView fx:id="mediaView" fitHeight="200.0" fitWidth="200.0" layoutX="25.0" layoutY="203.0" />
             <Text fx:id="filePathText" layoutX="25.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
@@ -44,7 +44,7 @@
                </font></Text>
             <Label layoutX="31.0" layoutY="161.0" text="Bands:" />
             <Text fx:id="bandsText" layoutX="86.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-            <Slider fx:id="timeSlider" layoutX="266.0" layoutY="63.0" onDragDone="#handleSeek" prefHeight="16.0" prefWidth="476.0" />
+            <Slider fx:id="timeSlider" layoutX="266.0" layoutY="63.0" prefHeight="16.0" prefWidth="476.0" />
          </children>
       </AnchorPane>
    </children>
